@@ -110,6 +110,15 @@ ccd_07_kn <- read_table("data/Sc061ckn.dat", col_names = FALSE, col_types = NULL
 ccd_07_ow <- read_table("data/Sc061cow.dat", col_names = FALSE, col_types = NULL)
 
 
+# Merge All of Them Into One
+# ccd_07 <- full_join(ccd_07_ai, ccd_07_kn)
+# ccd_07 <- full_join(ccd_07, ccd_07_ow)
+
+# Add YEAR column
+# ccd_07$YEAR <- 2007
+
+# Writes to .csv file
+# write.csv(ccd_07, 'cleaned_data/CCD_200607.csv')
 
 # 2005-06 ------------------------------------------------------------------------------
 # Read in .dat for states A-I
@@ -124,6 +133,15 @@ ccd_06_kn <- read_table("data/Sc051akn.dat", col_names = FALSE, col_types = NULL
 ccd_06_ow <- read_table("data/Sc051aow.dat", col_names = FALSE, col_types = NULL)
 
 
+# Merge All of Them Into One
+# ccd_06 <- full_join(ccd_06_ai, ccd_06_kn)
+# ccd_06 <- full_join(ccd_06, ccd_06_ow)
+
+# Add YEAR column
+# ccd_06$YEAR <- 2006
+
+# Writes to .csv file
+# write.csv(ccd_06, 'cleaned_data/CCD_200506.csv')
 
 # 2004-05 ------------------------------------------------------------------------------
 # Read in .dat for states A-I
@@ -138,6 +156,15 @@ ccd_05_kn <- read_table("data/Sc041bkn.dat", col_names = FALSE, col_types = NULL
 ccd_05_ow <- read_table("data/Sc041bow.dat", col_names = FALSE, col_types = NULL)
 
 
+# Merge All of Them Into One
+# ccd_05 <- full_join(ccd_05_ai, ccd_05_kn)
+# ccd_05 <- full_join(ccd_05, ccd_05_ow)
+
+# Add YEAR column
+# ccd_05$YEAR <- 2005
+
+# Writes to .csv file
+# write.csv(ccd_05, 'cleaned_data/CCD_200506.csv')
 
 # 2003-04 ------------------------------------------------------------------------------
 # Read in .txt for states A-I
@@ -152,6 +179,15 @@ ccd_04_kn <- read_table("data/Sc031akn.txt", col_names = FALSE, col_types = NULL
 ccd_04_ow <- read_table("data/Sc031aow.txt", col_names = FALSE, col_types = NULL)
 
 
+# Merge All of Them Into One
+# ccd_07 <- full_join(ccd_07_ai, ccd_07_kn)
+# ccd_07 <- full_join(ccd_07, ccd_07_ow)
+
+# Add YEAR column
+# ccd_07$YEAR <- 2007
+
+# Writes to .csv file
+# write.csv(ccd_07, 'cleaned_data/CCD_200607.csv')
 
 # 2002-03 ------------------------------------------------------------------------------
 # Read in .txt for states A-I
