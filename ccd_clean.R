@@ -20,31 +20,51 @@ read.function <- function(filename){
   data <- read.delim(filename, header = TRUE, sep="\t", na.strings = c('M', 'N'))
 }
 
-# Setup: Column Names ------------------------------------------------------------------------------
-# We want to create a standard column name list for all of the different years. 
-# Main Difference: they add a num for the year the end (ex 10, 09)
-# Read in one of the files 
-ccd_ex <- read.function("data/sc092a.txt")
-# Using the file, get the column names (excluding the first 4 since they don't have the year)
-columns <- colnames(ccd_ex[,5:ncol(ccd_ex)])
-# Substring the column names so that it doesn't include the 09
-columns_fixed <- substring(columns, 1, nchar(columns) - 2)
-# Append the new list to include the first 4 columns of the original file
-columns_list <- c(colnames(ccd_ex[,1:4]), columns_fixed)
+na_to_neg99 <- function(df) {
+  # Turn columns into numeric columns
+  df$LEVEL <- as.numeric(df$LEVEL)
+  df$TITLEI <- as.numeric(df$TITLEI)
+  df$STITLI <- as.numeric(df$STITLI)
+  df$MAGNET <- as.numeric(df$MAGNET)
+  df$CHARTR <- as.numeric(df$CHARTR)
+  df$SHARED <- as.numeric(df$SHARED)
+  
+  # Changes the numeric NAs into -99
+  df[na_list][is.na(df[na_list])] <- -99 
+  df[df == -2] <- -99
+  df[df == -1] <- -99
+  
+  return(df)
+}
 
+# We want to create a standard column name list for all of the different years. 
+# Main Difference: -they add a num for the year the end (ex 10, 09)
+#                  -AND THEY ALL DON'T INCLUDE THE SAME INFO GAHH   
+# Because of that, this only applies to 2008, 2009, 2010
+change_colnames <- function(df) {
+  # Get the column names (excluding the first 4 since they don't have the year)
+  columns <- colnames(df[,5:ncol(df)])
+  # Substring the column names so that it doesn't include the 09
+  columns_fixed <- substring(columns, 1, nchar(columns) - 2)
+  # Append the new list to include the first 4 columns of the original file
+  columns_list <- c(colnames(df[,1:4]), columns_fixed)
+  # Set the column names 
+  colnames(df) <- columns_list
+  
+  return(df)
+}
+
+# Setup: Lists ------------------------------------------------------------------------------
 # List of Columns to Turn NA => -99
 na_list <- c("LEVEL", "TITLEI", "STITLI", "MAGNET", "CHARTR", "SHARED")
-
-# List for 2000-01 to 2006-07
 
 # 2009-10 ------------------------------------------------------------------------------
 # Read in the file
 ccd_10 <- read.function("data/sc092a.txt")
 
-# Set the column names 
-colnames(ccd_10) <- columns_list
+# Change column names
+ccd_10 <- change_colnames(ccd_10)
 
-# Use for Testing/Error Checking
 # temp <- ccd_10 # store into temp to avoid having to re-read the data
 # sapply(ccd_10, mode) # checks the mode
 # sapply(ccd_10, class) # checks the class
@@ -78,46 +98,99 @@ ccd_08 <- read.function("data/sc071b.txt")
 
 
 # 2006-07 ------------------------------------------------------------------------------
+# Read in .dat for states A-I
 ccd_07_ai <- read_table("data/Sc061cai.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states K-N
 ccd_07_kn <- read_table("data/Sc061ckn.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states O-W
 ccd_07_ow <- read_table("data/Sc061cow.dat", col_names = FALSE, col_types = NULL)
 
 
 
 # 2005-06 ------------------------------------------------------------------------------
-ccd_06_ai <- read.delim("data/Sc051aai.dat", header=TRUE, sep=".")
-ccd_06_kn <- read.delim("data/Sc051akn.dat", header=TRUE)
-ccd_06_ow <- read.delim("data/Sc051aow.dat", header=TRUE)
+# Read in .dat for states A-I
+ccd_06_ai <- read_table("data/Sc051aai.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states K-N
+ccd_06_kn <- read_table("data/Sc051akn.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states O-W
+ccd_06_ow <- read_table("data/Sc051aow.dat", col_names = FALSE, col_types = NULL)
+
 
 
 # 2004-05 ------------------------------------------------------------------------------
-ccd_05_ai <- read.delim("data/Sc041bai.dat", header=TRUE, sep=".")
-ccd_05_kn <- read.delim("data/Sc041bkn.dat", header=TRUE)
-ccd_05_ow <- read.delim("data/Sc041bow.dat", header=TRUE)
+# Read in .dat for states A-I
+ccd_05_ai <- read_table("data/Sc041bai.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states K-N
+ccd_05_kn <- read_table("data/Sc041bkn.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states O-W
+ccd_05_ow <- read_table("data/Sc041bow.dat", col_names = FALSE, col_types = NULL)
+
 
 
 # 2003-04 ------------------------------------------------------------------------------
-ccd_04_ai <- read.function("data/Sc031aai.txt")
-ccd_04_kn <- read.function("data/Sc031akn.txt")
-ccd_04_ow <- read.function("data/Sc031aow.txt")
+# Read in .txt for states A-I
+ccd_04_ai <- read_table("data/Sc031aai.txt", col_names = FALSE, col_types = NULL)
 
+
+# Read in .txt for states K-N
+ccd_04_kn <- read_table("data/Sc031akn.txt", col_names = FALSE, col_types = NULL)
+
+
+# Read in .txt for states O-W
+ccd_04_ow <- read_table("data/Sc031aow.txt", col_names = FALSE, col_types = NULL)
 
 
 
 # 2002-03 ------------------------------------------------------------------------------
-ccd_03_ai <- read.function("data/Sc021aai.txt")
-ccd_03_kn <- read.function("data/Sc021akn.txt")
-ccd_03_ow <- read.function("data/Sc021aow.txt")
+# Read in .txt for states A-I
+ccd_03_ai <- read_table("data/Sc021aai.txt", col_names = FALSE, col_types = NULL)
+
+
+# Read in .txt for states K-N
+ccd_03_kn <- read_table("data/Sc021akn.txt", col_names = FALSE, col_types = NULL)
+
+
+# Read in .txt for states O-W
+ccd_03_ow <- read_table("data/Sc021aow.txt", col_names = FALSE, col_types = NULL)
+
 
 
 # 2001-02 ------------------------------------------------------------------------------
-ccd_02_ai <- read.delim("data/Sc011aai.dat", header=TRUE, sep=".")
-ccd_02_kn <- read.delim("data/Sc011akn.dat", header=TRUE)
-ccd_02_ow <- read.delim("data/Sc011aow.dat", header=TRUE)
+# Read in .dat for states A-I
+ccd_02_ai <- read_table("data/Sc011aai.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states K-N
+ccd_02_kn <- read_table("data/Sc011akn.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states O-W
+ccd_02_ow <- read_table("data/Sc011aow.dat", col_names = FALSE, col_types = NULL)
+
 
 
 # 2000-01 ------------------------------------------------------------------------------
-ccd_01_ai <- read.delim("data/Sc001aai.dat", header=TRUE, sep=".")
-ccd_01_kn <- read.delim("data/Sc001akn.dat", header=TRUE)
-ccd_01_ow <- read.delim("data/Sc001aow.dat", header=TRUE)
+# Read in .dat for states A-I
+ccd_01_ai <- read_table("data/Sc001aai.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states K-N
+ccd_01_kn <- read_table("data/Sc001akn.dat", col_names = FALSE, col_types = NULL)
+
+
+# Read in .dat for states O-W
+ccd_01_ow <- read_table("data/Sc001aow.dat", col_names = FALSE, col_types = NULL)
+
 
