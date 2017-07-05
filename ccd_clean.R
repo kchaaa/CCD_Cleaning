@@ -31,6 +31,9 @@ columns_fixed <- substring(columns, 1, nchar(columns) - 2)
 # Append the new list to include the first 4 columns of the original file
 columns_list <- c(colnames(ccd_ex[,1:4]), columns_fixed)
 
+# List of Columns to Turn NA => -99
+na_list <- c("LEVEL", "TITLEI", "STITLI", "MAGNET", "SEASCH", "SHARED")
+
 # 2009-10 ------------------------------------------------------------------------------
 # Read in the file
 ccd_10 <- read.function("data/sc092a.txt")
@@ -39,7 +42,7 @@ ccd_10 <- read.function("data/sc092a.txt")
 colnames(ccd_10) <- columns_list
 
 # Use for Testing/Error Checking
-# temp <- ccd_10
+# temp <- ccd_10 # store into temp to avoid having to re-read the data
 # sapply(ccd_10, mode) # checks the mode
 # sapply(ccd_10, class) # checks the class
 
@@ -52,7 +55,7 @@ ccd_10$CHARTR <- as.numeric(ccd_10$SEASCH)
 ccd_10$SHARED <- as.numeric(ccd_10$SHARED)
 
 # Changes the numeric NAs into -99
-ccd_10[c("LEVEL", "TITLEI", "STITLI", "MAGNET", "SEASCH", "SHARED")][is.na(ccd_10[c("LEVEL", "TITLEI", "STITLI", "MAGNET", "SEASCH", "SHARED")])] <- -99 
+ccd_10[na_list][is.na(ccd_10[na_list])] <- -99 
 ccd_10[ccd_10 == -2] <- -99
 ccd_10[ccd_10 == -1] <- -99
 
