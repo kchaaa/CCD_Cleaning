@@ -6,13 +6,14 @@
 # Cleaning: -99 = NA or Missing
 
 # Setup: Prep --------------------------------------------------------------------------------------------------------------
-# rm(list=ls())
-# setwd("/Users/crpe/Documents/CCD_Cleaning") # MAC
+rm(list=ls())
+setwd("/Users/crpe/Documents/CCD_Cleaning") # MAC
 
 library(plyr)
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(readr)
 
 # Functions ------------------------------------------------------------------------------
 read.function <- function(filename){
@@ -32,7 +33,9 @@ columns_fixed <- substring(columns, 1, nchar(columns) - 2)
 columns_list <- c(colnames(ccd_ex[,1:4]), columns_fixed)
 
 # List of Columns to Turn NA => -99
-na_list <- c("LEVEL", "TITLEI", "STITLI", "MAGNET", "SEASCH", "SHARED")
+na_list <- c("LEVEL", "TITLEI", "STITLI", "MAGNET", "CHARTR", "SHARED")
+
+# List for 2000-01 to 2006-07
 
 # 2009-10 ------------------------------------------------------------------------------
 # Read in the file
@@ -51,7 +54,7 @@ ccd_10$LEVEL <- as.numeric(ccd_10$LEVEL)
 ccd_10$TITLEI <- as.numeric(ccd_10$TITLEI)
 ccd_10$STITLI <- as.numeric(ccd_10$STITLI)
 ccd_10$MAGNET <- as.numeric(ccd_10$MAGNET)
-ccd_10$CHARTR <- as.numeric(ccd_10$SEASCH)
+ccd_10$CHARTR <- as.numeric(ccd_10$CHARTR)
 ccd_10$SHARED <- as.numeric(ccd_10$SHARED)
 
 # Changes the numeric NAs into -99
@@ -75,9 +78,10 @@ ccd_08 <- read.function("data/sc071b.txt")
 
 
 # 2006-07 ------------------------------------------------------------------------------
-ccd_07_ai <- read.delim("data/Sc061cai.dat", header = FALSE, sep="\t", as.is=FALSE)
-ccd_07_kn <- read.delim("data/Sc061ckn.dat", header=TRUE)
-ccd_07_ow <- read.delim("data/Sc061cow.dat", header=TRUE)
+ccd_07_ai <- read_table("data/Sc061cai.dat", col_names = FALSE, col_types = NULL)
+ccd_07_kn <- read_table("data/Sc061ckn.dat", col_names = FALSE, col_types = NULL)
+ccd_07_ow <- read_table("data/Sc061cow.dat", col_names = FALSE, col_types = NULL)
+
 
 
 # 2005-06 ------------------------------------------------------------------------------
